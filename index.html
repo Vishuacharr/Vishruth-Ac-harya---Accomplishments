@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Intelligence Brief — Vishruth Acharya × Supreme Lending</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,400;0,600;1,400;1,600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080810;
+      --panel: #0f1020;
+      --panel-2: #13142b;
+      --text: #f3f4ff;
+      --muted: #a9accd;
+      --red: #C8102E;
+      --amber: #ffb020;
+      --green: #30f08b;
+      --blue: #33a8ff;
+      --purple: #b67dff;
+      --orange: #ff8a3d;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: var(--bg); color: var(--text); font-family: 'JetBrains Mono', monospace; scroll-behavior: smooth; }
+    body::before { content:""; position:fixed; inset:0; pointer-events:none; background: repeating-linear-gradient(to bottom, rgba(255,255,255,.03) 0 1px, transparent 1px 4px); mix-blend-mode:soft-light; z-index:1000; }
+    body::after { content:""; position:fixed; inset:0; pointer-events:none; background-image: radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px); background-size: 3px 3px; opacity:.16; z-index:1001; }
+    .cursor-dot,.cursor-ring{position:fixed;left:0;top:0;pointer-events:none;z-index:2000;border-radius:50%;transform:translate(-50%,-50%)}
+    .cursor-dot{width:8px;height:8px;background:var(--red)}
+    .cursor-ring{width:30px;height:30px;border:1px solid var(--red);transition:transform .1s linear}
+
+    nav{position:fixed;right:1rem;top:1rem;z-index:1002;background:#0008;padding:.5rem;border:1px solid #ffffff20;border-radius:.5rem}
+    nav a{display:block;color:var(--muted);text-decoration:none;font-size:.72rem;padding:.25rem .4rem}
+    nav a.active,nav a:hover{color:var(--red)}
+
+    section{min-height:100vh;padding:5rem 8vw;position:relative;border-bottom:1px solid #ffffff12;overflow:hidden}
+    h1,h2,h3{font-family:'Bebas Neue',sans-serif;letter-spacing:.04em;margin:0}
+    .subtitle{font-family:'Crimson Pro',serif;font-style:italic;color:#e7d7d7;font-size:1.25rem;max-width:70ch}
+
+    #hero{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:1.5rem}
+    #mindmap{width:min(1000px,95vw);height:min(540px,64vh)}
+    .node{cursor:pointer;filter:drop-shadow(0 0 12px currentColor);animation:pulse 2.8s infinite}
+    .center-node{color:var(--red)} .amber{color:var(--amber)} .green{color:var(--green)} .blue{color:var(--blue)} .purple{color:var(--purple)} .orange{color:var(--orange)}
+    .map-line{fill:none;stroke-width:2.5;stroke:#ffffff60;stroke-dasharray:300;stroke-dashoffset:300;animation:draw 2.2s ease forwards}
+    @keyframes draw{to{stroke-dashoffset:0}}
+    @keyframes pulse{0%,100%{opacity:.8}50%{opacity:1;transform:scale(1.03)}}
+
+    .hero-title{font-size:clamp(2rem,7vw,5rem)}
+
+    .reveal{opacity:0;transform:translateY(22px) scale(.98);transition:.75s}
+    .reveal.show{opacity:1;transform:none}
+
+    .grid{display:grid;gap:1rem}
+    .team-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .card{background:linear-gradient(155deg,var(--panel),var(--panel-2));border:1px solid #ffffff1d;padding:1rem;position:relative}
+    .dossier::after{content:"CLASSIFIED";position:absolute;top:10px;right:10px;color:var(--red);border:1px solid var(--red);padding:.25rem .5rem;opacity:0;transform:rotate(-12deg);transition:.3s}
+    .dossier:hover::after{opacity:1}
+
+    .ticker{white-space:nowrap;overflow:hidden;border:1px solid #ffffff22;margin:1rem 0 2rem;padding:.6rem 0;background:#0b0c1a}
+    .ticker-inner{display:inline-block;padding-left:100%;animation:ticker 22s linear infinite}
+    @keyframes ticker{to{transform:translateX(-100%)}}
+
+    .intel-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .intel-card{border-top:3px solid transparent;transition:.25s}
+    .intel-card:hover{transform:translateY(-5px);border-top-color:var(--red)}
+
+    .problem{margin:1rem 0;padding:1rem;border:1px solid #ffffff1f;background:#0d0e1e;position:relative;transition:.3s}
+    .problem:hover{transform:translateY(-5px)}
+    .problem::before{content:"";position:absolute;left:0;top:0;bottom:0;width:0;transition:.3s}
+    .sev-critical::before{background:var(--red)} .sev-high::before{background:var(--amber)} .sev-medium::before{background:#85b5ff}
+    .problem:hover::before{width:6px}
+    .num{font-family:'Bebas Neue';font-size:3rem;opacity:.18}
+
+    .solutions{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .impact{height:10px;background:#ffffff1a;overflow:hidden;margin-top:.8rem}
+    .impact > span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),#9affcf);transition:1.3s}
+
+    .timeline{border-left:2px solid #ffffff2e;padding-left:1.5rem}
+    .entry{position:relative;margin:1rem 0;padding:1rem;background:#0f1022;border:1px solid #ffffff1f}
+    .entry::before{content:"";position:absolute;left:-2rem;top:1.3rem;width:12px;height:12px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green)}
+
+    table{width:100%;border-collapse:collapse;background:#0f1022}
+    th,td{border:1px solid #ffffff2a;padding:.7rem;text-align:left}
+    th{font-family:'Bebas Neue';font-size:1.3rem}
+
+    #closing{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+    .ready{font-size:clamp(3rem,12vw,9rem)}
+
+    .counter{font-weight:600;color:var(--green)}
+    @media (max-width:900px){
+      nav{left:1rem;right:1rem;display:flex;overflow:auto}
+      nav a{white-space:nowrap}
+      .team-grid,.intel-grid,.solutions{grid-template-columns:1fr}
+      section{padding:5rem 1rem}
+    }
+  </style>
+</head>
+<body>
+<div class="cursor-dot"></div><div class="cursor-ring"></div>
+<nav>
+  <a href="#hero">Hero</a><a href="#team-intel">Team</a><a href="#company">Company</a><a href="#problems">Problems</a><a href="#solutions">Solutions</a><a href="#story">Story</a><a href="#comparison">Compare</a><a href="#closing">Close</a>
+</nav>
+<section id="hero">
+  <svg id="mindmap" viewBox="0 0 1000 540">
+    <path class="map-line" d="M500 270 C 380 180, 260 120, 170 90"/><path class="map-line" d="M500 270 C 360 300, 260 350, 170 430"/>
+    <path class="map-line" d="M500 270 C 470 130, 470 70, 500 45"/><path class="map-line" d="M500 270 C 630 180, 740 120, 840 95"/><path class="map-line" d="M500 270 C 650 300, 760 350, 850 430"/>
+    <g class="node center-node" data-target="company"><circle cx="500" cy="270" r="55" fill="currentColor"/><text x="500" y="275" fill="#fff" font-size="17" text-anchor="middle">Supreme Lending</text></g>
+    <g class="node amber" data-target="problems"><circle cx="170" cy="90" r="46" fill="currentColor"/><text x="170" y="95" fill="#000" font-size="14" text-anchor="middle">7 Problems</text></g>
+    <g class="node green" data-target="solutions"><circle cx="170" cy="430" r="54" fill="currentColor"/><text x="170" y="435" fill="#001b10" font-size="14" text-anchor="middle">4 AI Solutions</text></g>
+    <g class="node blue" data-target="story"><circle cx="500" cy="45" r="42" fill="currentColor"/><text x="500" y="50" fill="#001428" font-size="13" text-anchor="middle">My Story</text></g>
+    <g class="node purple" data-target="team-intel"><circle cx="840" cy="95" r="46" fill="currentColor"/><text x="840" y="100" fill="#160a22" font-size="13" text-anchor="middle">Team Intel</text></g>
+    <g class="node orange" data-target="company"><circle cx="850" cy="430" r="54" fill="currentColor"/><text x="850" y="435" fill="#2b1303" font-size="13" text-anchor="middle">Industry Research</text></g>
+  </svg>
+  <h1 class="hero-title">INTELLIGENCE BRIEF — VISHRUTH ACHARYA × SUPREME LENDING</h1>
+  <p class="subtitle">I didn't read the job description. I studied your company.</p>
+</section>
+<section id="team-intel" class="reveal"><h2>I KNOW WHO'S IN THE ROOM</h2><div class="grid team-grid">
+<div class="card dossier"><h3>Stephen Knebel</h3><p>Recruiter/coordinator... professionalism.</p></div>
+<div class="card dossier"><h3>Muhammad Waqar ⭐ KEY</h3><p>AI Architect... UTD overlap. Speak RAG, LangGraph, eval metrics, orchestration.</p></div>
+<div class="card dossier"><h3>JC Chappell</h3><p>Director BI... lead with outcomes and ROI.</p></div>
+<div class="card dossier"><h3>Marina Sheremetyev</h3><p>BI Solutions Architect... explainability, compliance, non-technical communication.</p></div>
+</div></section>
+<section id="company" class="reveal"><h2>WHAT SUPREME IS BUILDING</h2>
+<div class="ticker"><div class="ticker-inner">$3B Production Run Rate | 610 New Loan Officers | 10 AI Specialists | "AI is the new SaaS" — CEO Scott Everett | Building proprietary AI NOT buying SaaS | Automating: Document Review + Closing Disclosures + Appraisal Analysis |</div></div>
+<div class="grid intel-grid">
+<div class="card intel-card">1. AI Is the New SaaS ... "broken up every single process and built our own."</div>
+<div class="card intel-card">2. Movement Mortgage lawsuit ... data security + AI access auditing urgent.</div>
+<div class="card intel-card">3. 610 new LOs ... copilot as infrastructure.</div>
+<div class="card intel-card">4. Tech stack as recruiting tool.</div>
+<div class="card intel-card">5. Intern → Jr AI Architect pathway.</div>
+<div class="card intel-card">6. UTD connection lever.</div></div></section>
+<section id="problems" class="reveal"><h2>7 REAL PROBLEMS I FOUND</h2><p class="subtitle">Documented, active, urgent — not theoretical.</p>
+<div class="problem sev-critical"><div class="num">01</div><b>CRITICAL — Guessing Is Unacceptable</b><p>...</p></div>
+<div class="problem sev-critical"><div class="num">02</div><b>CRITICAL — Explainability & Compliance Exposure</b><p>...</p></div>
+<div class="problem sev-critical"><div class="num">03</div><b>CRITICAL — Document Version Chaos</b><p>...</p></div>
+<div class="problem sev-high"><div class="num">04</div><b>HIGH — The AI Talent Gap</b><p>...</p></div>
+<div class="problem sev-high"><div class="num">05</div><b>HIGH — Trade Secret & Data Exfiltration Risk</b><p>...</p></div>
+<div class="problem sev-high"><div class="num">06</div><b>HIGH — Speed-to-Close as Battlefield</b><p>...</p></div>
+<div class="problem sev-high"><div class="num">07</div><b>HIGH — 610 New LOs, Zero Consistent Knowledge Base</b><p>...</p></div>
+</section>
+<section id="solutions" class="reveal"><h2>4 THINGS I'D BUILD — WITH PROOF</h2><p class="subtitle">Each maps to a real problem. Each is backed by something I've already shipped.</p>
+<div class="grid solutions">
+<div class="card"><h3>Production Evaluation Harness</h3><p>Solves 01+02...</p><small>MY PROOF: Faithfulness 0.91 · Relevance 0.88 · Accuracy 0.85</small><div class="impact"><span data-width="88%"></span></div></div>
+<div class="card"><h3>Multi-Agent Loan Processing Pipeline</h3><p>Solves 03+06...</p><small>MY PROOF: 5-agent LangGraph, 10K+ corpus.</small><div class="impact"><span data-width="60%"></span></div></div>
+<div class="card"><h3>RAG-Powered LO Knowledge Copilot</h3><p>Solves 04+07...</p><small>MY PROOF: 5,000+ users, 92% satisfaction, 40% accuracy.</small><div class="impact"><span data-width="85%"></span></div></div>
+<div class="card"><h3>AI Data Access Auditing System</h3><p>Solves 05...</p><small>MY PROOF: data lineage + full traceability.</small><div class="impact"><span data-width="92%"></span></div></div>
+</div>
+</section>
+<section id="story" class="reveal"><h2>MY STORY — THE EVIDENCE</h2><p class="subtitle">I don't just want to intern. I want to ship things.</p>
+<div class="timeline">
+<div class="entry">Nov 2020 – Sep 2022 · Sansera Engineering ... ▲ <span class="counter" data-target="18">0</span>% downtime reduction</div>
+<div class="entry">Feb 2023 – Aug 2023 · Cognis Solutions ... ▲ <span class="counter" data-target="22">0</span>% accuracy</div>
+<div class="entry">Aug 2024 – May 2025 · UT Dallas ... ▲ <span class="counter" data-target="35">0</span>% comprehension | <span class="counter" data-target="800">0</span>+ students</div>
+<div class="entry">Dec 2024 – Jun 2025 · UTD AI Chatbot ... <span class="counter" data-target="5000">0</span>+ users, <span class="counter" data-target="92">0</span>% satisfaction</div>
+<div class="entry">Jun 2025 – Feb 2026 · ATC ... faithfulness <span class="counter" data-target="0.91" data-decimals="2">0</span></div>
+<div class="entry">June 2026 → · Supreme Lending ... READY DAY ONE</div>
+</div></section>
+<section id="comparison" class="reveal"><h2>WHY ME — THE HONEST COMPARISON</h2>
+<table><tr><th>Capability</th><th>Typical AI Intern</th><th>Vishruth Acharya</th></tr>
+<tr><td>RAG Pipeline</td><td>Tutorial-familiar</td><td>✓ Built/deployed — 10K+ docs, pgvector</td></tr>
+<tr><td>Multi-Agent Systems</td><td>Rarely implemented</td><td>✓ 5-agent LangGraph</td></tr>
+<tr><td>Evaluation Harness</td><td>Usually skipped</td><td>✓ 0.91/0.88/0.85</td></tr>
+<tr><td>CI/CD</td><td>Manual deploys</td><td>✓ Automated pipelines</td></tr>
+<tr><td>Real users</td><td>Demo/prototype</td><td>✓ 5,000+ MAU</td></tr>
+<tr><td>Communication</td><td>Varies</td><td>✓ 800+ students, 35% gain</td></tr>
+<tr><td>Mortgage knowledge</td><td>None</td><td>✓ TRID, RESPA, roadmap</td></tr>
+<tr><td>UTD connection</td><td>None</td><td>✓ Same era overlap</td></tr>
+<tr><td>Business metrics</td><td>Academic focus</td><td>✓ Measurable outcomes</td></tr></table></section>
+<section id="closing" class="reveal"><h2 class="ready">READY TO SHIP.</h2><p class="subtitle">I didn't build this to impress you. I built it to show you how I work — research first, solutions second, execution always.</p><p>Email · Phone · Degree · Start Date</p><p style="font-family:'Crimson Pro',serif;font-size:3rem;font-style:italic;">Vishruth Acharya</p></section>
+<script>
+const dot=document.querySelector('.cursor-dot'),ring=document.querySelector('.cursor-ring');
+let mx=0,my=0,rx=0,ry=0;window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
+(function anim(){rx+=(mx-rx)*.14;ry+=(my-ry)*.14;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim)})();
+
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');e.target.querySelectorAll('.impact span').forEach(s=>s.style.width=s.dataset.width||'70%');e.target.querySelectorAll('.counter').forEach(c=>runCounter(c));}}),{threshold:.2});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+function runCounter(el){if(el.dataset.done)return;el.dataset.done=1;const t=parseFloat(el.dataset.target),d=+el.dataset.decimals||0;let v=0,step=t/60;const i=setInterval(()=>{v+=step;if(v>=t){v=t;clearInterval(i)}el.textContent=v.toFixed(d)},24)}
+
+document.querySelectorAll('.node').forEach(n=>n.addEventListener('click',()=>document.getElementById(n.dataset.target).scrollIntoView({behavior:'smooth'})));
+const sections=[...document.querySelectorAll('section')],links=[...document.querySelectorAll('nav a')];
+const navObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+e.target.id));}}),{threshold:.55});sections.forEach(s=>navObs.observe(s));
+</script>
+</body>
+</html>
